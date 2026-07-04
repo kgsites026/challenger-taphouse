@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>Challenger Tap House | Best Craft Beer, Burgers & Wings in Lancaster, CA</title>
+<meta name="description" content="Experience Challenger Tap House in Lancaster, CA. Enjoy craft beer, signature burgers, wings, great service, and a welcoming atmosphere at 1048 E Ave K."/>
+<style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#080808;--dark:#0f0f0f;--dark2:#161616;--dark3:#1e1a14;
+  --charcoal:#242424;--amber:#D97706;--gold:#C9962A;--gold2:#E8B84B;
+  --cream:#F5E6C8;--text:#E8E0D0;--muted:#9B8B78;--faint:#4A4035;
+  --glass:rgba(255,255,255,0.04);--glassborder:rgba(255,255,255,0.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+
+/* AI IMAGE */
+.ai-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
+.ai-placeholder{width:100%;height:100%;background:linear-gradient(135deg,var(--dark3),var(--charcoal));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
+.ai-placeholder::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,150,42,0.05),transparent)}
+.ai-spin{width:28px;height:28px;border:2px solid var(--glassborder);border-top-color:var(--amber);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--black);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s,visibility .8s}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.tap-svg{width:80px;height:120px}
+.beer-fill{animation:fillBeer 2s ease-in-out forwards}
+@keyframes fillBeer{from{height:0;y:90}to{height:60px;y:30}}
+.loader-logo{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold2);letter-spacing:4px;margin-top:20px;opacity:0;animation:fadeUp .5s .8s forwards}
+.loader-bar{width:200px;height:2px;background:var(--charcoal);margin-top:16px;border-radius:2px;overflow:hidden;opacity:0;animation:fadeUp .3s 1s forwards}
+.loader-progress{height:100%;background:linear-gradient(90deg,var(--amber),var(--gold2));border-radius:2px;animation:prog 2s 1s ease-out forwards}
+@keyframes prog{from{width:0}to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.loader-status{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:12px;opacity:0;animation:fadeUp .3s 1.1s forwards}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;transition:all .4s}
+nav.scrolled{background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--glassborder)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 5%}
+.nav-logo-main{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:26px;color:var(--gold2);letter-spacing:3px;line-height:1}
+.nav-logo-sub{font-size:9px;letter-spacing:5px;color:var(--muted);text-transform:uppercase}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color .3s;font-weight:500}
+.nav-links a:hover{color:var(--gold2)}
+.nav-cta{background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;padding:10px 24px;border:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border-radius:2px;transition:all .3s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(217,119,6,0.4)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--cream);border-radius:2px}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--black);z-index:490;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:40px;letter-spacing:4px;color:var(--cream)}
+.mobile-close{position:absolute;top:24px;right:5%;background:none;border:none;color:var(--cream);font-size:28px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 5% 80px;text-align:center}
+.hero-bg-img{position:absolute;inset:0;z-index:0}
+.hero-bg-img img{width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,0.65) 0%,rgba(8,8,8,0.85) 70%,var(--black) 100%)}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,150,42,0.12);border:1px solid rgba(201,150,42,0.3);border-radius:100px;padding:8px 20px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:28px}
+.hero-dot{width:6px;height:6px;background:var(--amber);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:clamp(54px,10vw,120px);line-height:.95;color:#fff;letter-spacing:4px;margin-bottom:24px}
+.hero h1 span{color:var(--gold2);display:block}
+.hero-sub{font-size:clamp(15px,2.5vw,20px);line-height:1.7;color:rgba(232,224,208,0.8);max-width:600px;margin:0 auto 48px;font-weight:300}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+.btn-primary{background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;padding:16px 40px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;border:none;border-radius:2px;transition:all .3s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(217,119,6,0.45)}
+.btn-outline{background:transparent;color:var(--gold2);padding:16px 40px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;border:1px solid rgba(201,150,42,0.5);border-radius:2px;transition:all .3s}
+.btn-outline:hover{background:rgba(201,150,42,0.08)}
+.hero-stats{display:flex;border:1px solid var(--glassborder);border-radius:4px;overflow:hidden;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px)}
+.hero-stat{padding:20px 36px;text-align:center;border-right:1px solid var(--glassborder);flex:1}
+.hero-stat:last-child{border-right:none}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold2);letter-spacing:2px;line-height:1}
+.hero-stat-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* FEATURES */
+.features{padding:0 5%;background:var(--dark)}
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--glassborder);border-top:none;max-width:100%}
+.feat{padding:40px 32px;border-right:1px solid var(--glassborder);transition:background .3s}
+.feat:last-child{border-right:none}
+.feat:hover{background:var(--dark2)}
+.feat-img{width:56px;height:56px;border-radius:8px;overflow:hidden;margin-bottom:16px;border:1px solid var(--glassborder)}
+.feat-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--cream);margin-bottom:8px}
+.feat-desc{font-size:13px;line-height:1.7;color:var(--muted)}
+
+/* SECTION */
+.section-label{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.section-title{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:clamp(40px,6vw,72px);letter-spacing:3px;color:#fff;line-height:1;margin-bottom:20px}
+.section-title span{color:var(--gold2)}
+.section-desc{font-size:16px;line-height:1.8;color:var(--muted);max-width:580px}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,var(--amber),var(--gold));margin:24px 0;border-radius:2px}
+
+/* ABOUT */
+.about{padding:120px 5%;background:var(--dark2)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1200px;margin:0 auto}
+.about-main-img{width:100%;aspect-ratio:4/5;border-radius:4px;overflow:hidden;position:relative;border:1px solid var(--glassborder)}
+.about-accent-img{position:absolute;bottom:-24px;right:-24px;width:55%;aspect-ratio:1;border-radius:4px;overflow:hidden;border:3px solid var(--dark2)}
+.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px}
+.about-hi{display:flex;align-items:flex-start;gap:12px;background:var(--glass);border:1px solid var(--glassborder);border-radius:4px;padding:14px}
+.about-hi-icon{width:36px;height:36px;border-radius:6px;overflow:hidden;flex-shrink:0;border:1px solid var(--glassborder)}
+.about-hi-text strong{display:block;font-size:13px;color:var(--cream);margin-bottom:2px}
+.about-hi-text span{font-size:12px;color:var(--muted)}
+
+/* MENU */
+.menu-section{padding:120px 5%;background:var(--black)}
+.menu-header{text-align:center;margin-bottom:56px}
+.menu-header .divider{margin:24px auto}
+.menu-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.menu-tab{background:var(--glass);border:1px solid var(--glassborder);color:var(--muted);padding:10px 22px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;border-radius:2px;transition:all .3s}
+.menu-tab.active,.menu-tab:hover{background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;border-color:transparent;font-weight:700}
+.menu-panel{display:none}
+.menu-panel.active{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;max-width:1200px;margin:0 auto}
+.menu-card{background:var(--dark2);border:1px solid var(--glassborder);border-radius:4px;overflow:hidden;transition:all .35s}
+.menu-card:hover{transform:translateY(-6px);border-color:rgba(201,150,42,0.3);box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.menu-card-img{height:200px;position:relative;overflow:hidden}
+.menu-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:2px;z-index:2}
+.menu-body{padding:20px}
+.menu-cat{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.menu-name{font-family:Georgia,'Times New Roman',serif;font-size:19px;font-weight:700;color:var(--cream);margin-bottom:8px}
+.menu-desc{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:16px}
+.menu-footer{display:flex;align-items:center;justify-content:space-between}
+.menu-price{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:24px;color:var(--gold2);letter-spacing:2px}
+.menu-add{background:var(--glass);border:1px solid var(--glassborder);color:var(--cream);padding:7px 16px;font-size:11px;letter-spacing:2px;text-transform:uppercase;border-radius:2px;transition:all .3s}
+.menu-add:hover{background:var(--amber);border-color:var(--amber);color:#000}
+
+/* GALLERY */
+.gallery-section{padding:120px 5%;background:var(--dark2)}
+.gallery-header{text-align:center;margin-bottom:56px}
+.gallery-header .divider{margin:24px auto}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,240px);gap:8px;max-width:1200px;margin:0 auto}
+.gallery-item{border-radius:4px;overflow:hidden;cursor:pointer;position:relative;border:1px solid var(--glassborder);transition:all .3s}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+.gallery-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);opacity:0;display:flex;align-items:center;justify-content:center;transition:opacity .3s;z-index:2}
+.gallery-overlay span{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:#fff}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.gallery-item:hover{border-color:rgba(201,150,42,0.4)}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.lightbox.open{display:flex}
+.lb-img-wrap{max-width:80vw;max-height:80vh;border-radius:4px;overflow:hidden;position:relative}
+.lb-img-wrap img{max-width:80vw;max-height:80vh;object-fit:contain;display:block}
+.lb-caption{text-align:center;margin-top:16px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--cream)}
+.lightbox-close{position:absolute;top:24px;right:24px;background:none;border:none;color:#fff;font-size:32px;z-index:1}
+
+/* REVIEWS */
+.reviews-section{padding:120px 5%;background:var(--black)}
+.reviews-header{text-align:center;margin-bottom:64px}
+.reviews-header .divider{margin:24px auto}
+.rating-summary{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px}
+.rating-big{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--gold2);line-height:1}
+.rating-stars{font-size:20px;color:var(--amber);letter-spacing:4px}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1200px;margin:0 auto}
+.review-card{background:var(--dark2);border:1px solid var(--glassborder);border-radius:4px;padding:28px;transition:all .3s;position:relative;overflow:hidden}
+.review-card::before{content:'"';position:absolute;top:-10px;right:20px;font-family:'Playfair Display',serif;font-size:120px;color:rgba(201,150,42,0.06);line-height:1}
+.review-card:hover{border-color:rgba(201,150,42,0.25);transform:translateY(-4px)}
+.review-stars{color:var(--amber);font-size:14px;letter-spacing:3px;margin-bottom:14px}
+.review-text{font-size:15px;line-height:1.8;color:var(--cream);margin-bottom:20px;font-style:italic}
+.review-author{display:flex;align-items:center;gap:12px;border-top:1px solid var(--glassborder);padding-top:16px}
+.review-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--amber),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#000;flex-shrink:0}
+.review-name{font-size:14px;font-weight:600;color:var(--cream)}
+.review-meta{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* EVENTS */
+.events-section{padding:120px 5%;background:var(--dark2)}
+.events-inner{max-width:1200px;margin:0 auto}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.event-card{background:var(--dark);border:1px solid var(--glassborder);border-radius:4px;overflow:hidden;transition:all .3s}
+.event-card:hover{border-color:rgba(201,150,42,0.3);transform:translateY(-4px)}
+.event-img{height:160px;overflow:hidden;position:relative}
+.event-body{padding:20px}
+.event-day{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.event-title{font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:700;color:var(--cream);margin-bottom:8px}
+.event-desc{font-size:13px;line-height:1.7;color:var(--muted);margin-bottom:14px}
+.event-time{display:inline-block;background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.25);color:var(--amber);padding:5px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;border-radius:2px}
+
+/* STATS */
+.stats-section{padding:80px 5%;background:linear-gradient(135deg,var(--dark3),var(--charcoal));border-top:1px solid var(--glassborder);border-bottom:1px solid var(--glassborder)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--glassborder);max-width:1000px;margin:0 auto;border:1px solid var(--glassborder);border-radius:4px;overflow:hidden}
+.stat-item{background:var(--dark3);padding:40px 32px;text-align:center}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold2);letter-spacing:2px;line-height:1}
+.stat-unit{font-size:28px;color:var(--amber)}
+.stat-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* LOCATION */
+.location-section{padding:120px 5%;background:var(--black)}
+.location-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:start;max-width:1200px;margin:0 auto}
+.contact-items{display:flex;flex-direction:column;gap:16px;margin:32px 0}
+.contact-item{display:flex;align-items:flex-start;gap:16px;background:var(--glass);border:1px solid var(--glassborder);border-radius:4px;padding:18px}
+.contact-icon-img{width:36px;height:36px;border-radius:6px;overflow:hidden;flex-shrink:0}
+.contact-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.contact-value{font-size:15px;color:var(--cream);font-weight:500}
+.contact-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.hours-grid{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin-top:8px}
+.hour-row{display:contents}
+.hour-row span:first-child{font-size:13px;color:var(--muted)}
+.hour-row span:last-child{font-size:13px;color:var(--cream);font-weight:500}
+.map-wrap{border-radius:4px;overflow:hidden;border:1px solid var(--glassborder)}
+.map-wrap iframe{width:100%;height:400px;border:none;filter:grayscale(60%) invert(90%) hue-rotate(180deg)}
+
+/* CONTACT */
+.contact-section{padding:120px 5%;background:var(--dark2)}
+.contact-inner{max-width:700px;margin:0 auto;text-align:center}
+.contact-form{background:var(--dark);border:1px solid var(--glassborder);border-radius:4px;padding:48px;margin-top:48px;text-align:left}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:var(--charcoal);border:1px solid var(--glassborder);color:var(--cream);padding:14px 16px;font-size:14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;border-radius:2px;transition:border-color .3s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--amber)}
+.form-group textarea{height:120px;resize:vertical}
+.form-error{font-size:11px;color:#EF4444;margin-top:4px;display:none}
+.form-success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:20px;text-align:center;color:#4ADE80;font-size:14px;display:none;margin-top:16px}
+.form-btn{width:100%;background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;padding:16px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;border:none;border-radius:2px;transition:all .3s}
+.form-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(217,119,6,0.4)}
+
+/* FAQ */
+.faq-section{padding:100px 5%;background:var(--black)}
+.faq-inner{max-width:800px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:56px}
+.faq-header .divider{margin:24px auto}
+.faq-item{border:1px solid var(--glassborder);border-radius:4px;margin-bottom:10px;overflow:hidden}
+.faq-q{width:100%;background:var(--dark2);border:none;color:var(--cream);padding:18px 24px;text-align:left;font-size:15px;font-weight:500;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .3s}
+.faq-q:hover,.faq-q.open{background:var(--charcoal)}
+.faq-arrow{font-size:20px;color:var(--amber);transition:transform .3s;flex-shrink:0}
+.faq-q.open .faq-arrow{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a.open{max-height:200px}
+.faq-a-inner{padding:0 24px 20px;font-size:14px;line-height:1.8;color:var(--muted)}
+
+/* NEWSLETTER */
+.newsletter{padding:80px 5%;background:linear-gradient(135deg,var(--dark3),var(--charcoal));border-top:1px solid var(--glassborder)}
+.newsletter-inner{max-width:600px;margin:0 auto;text-align:center}
+.newsletter h2{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:40px;letter-spacing:3px;color:#fff;margin-bottom:12px}
+.newsletter p{font-size:15px;color:var(--muted);margin-bottom:32px}
+.newsletter-form{display:flex;gap:12px;max-width:440px;margin:0 auto}
+.newsletter-form input{flex:1;background:var(--dark);border:1px solid var(--glassborder);color:var(--cream);padding:14px 18px;font-size:14px;font-family:'Inter',sans-serif;border-radius:2px;outline:none;transition:border-color .3s}
+.newsletter-form input:focus{border-color:var(--amber)}
+.newsletter-form button{background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;padding:14px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;border-radius:2px;white-space:nowrap;transition:all .3s}
+.newsletter-form button:hover{transform:translateY(-1px)}
+.newsletter-success{display:none;color:#4ADE80;font-size:14px;margin-top:12px}
+
+/* FOOTER */
+footer{background:#050505;padding:80px 5% 32px;border-top:1px solid var(--glassborder)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;max-width:1200px;margin:0 auto 60px}
+.footer-brand-name{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:28px;color:var(--gold2);letter-spacing:3px}
+.footer-brand-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.footer-about{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:24px}
+.social-row{display:flex;gap:10px}
+.social-btn{width:38px;height:38px;border:1px solid var(--glassborder);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);transition:all .3s}
+.social-btn:hover{background:var(--amber);border-color:var(--amber);color:#000}
+.footer-col h4{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:20px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:var(--muted);transition:color .3s}
+.footer-links a:hover{color:var(--gold2)}
+.footer-hours-list p{font-size:13px;color:var(--muted);line-height:2.1}
+.footer-hours-list strong{color:var(--cream)}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding-top:32px;border-top:1px solid var(--glassborder);font-size:12px;color:var(--faint)}
+
+/* FLOAT */
+.float-btn{position:fixed;bottom:32px;right:32px;z-index:400;background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;padding:14px 24px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;border-radius:2px;box-shadow:0 8px 32px rgba(217,119,6,0.5);transition:all .3s}
+.float-btn:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(217,119,6,0.6)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .about-inner,.location-inner,.footer-grid{grid-template-columns:1fr;gap:40px}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1}
+  .gallery-item:nth-child(4){grid-column:span 1}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .newsletter-form{flex-direction:column}
+  .footer-bottom{flex-direction:column;gap:12px}
+}
+@media(max-width:600px){
+  .features-grid{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap}
+  .hero-stat{flex:1;min-width:120px}
+}
+/* PHONE POPUP */
+.phone-popup{display:none;position:fixed;inset:0;z-index:600;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px)}
+.phone-popup.open{display:flex}
+.phone-box{background:var(--dark2);border:1px solid rgba(201,150,42,0.3);border-radius:8px;padding:40px 48px;text-align:center;max-width:360px;width:90%}
+.phone-box-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.phone-box-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff;margin-bottom:24px}
+.phone-box-num{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:3px;color:var(--gold2);margin-bottom:28px}
+.phone-box-call{display:block;background:linear-gradient(135deg,var(--amber),var(--gold));color:#000;padding:14px 32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;border-radius:2px;width:100%;margin-bottom:12px;transition:all .3s}
+.phone-box-call:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(217,119,6,0.4)}
+.phone-box-close{background:none;border:none;color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:4px}
+.phone-box-close:hover{color:var(--cream)}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader" style="display:none"></div>
+
+<!-- PHONE POPUP -->
+<div class="phone-popup" id="phonePopup" onclick="closePhone()">
+  <div class="phone-box" onclick="event.stopPropagation()">
+    <div class="phone-box-label">Call to Reserve</div>
+    <div class="phone-box-name">Challenger Tap House</div>
+    <div class="phone-box-num">(661) 418-0056</div>
+    <a href="tel:6614180056" class="phone-box-call">Call Now</a>
+    <button class="phone-box-close" onclick="closePhone()">Dismiss</button>
+  </div>
+</div>
+
+<!-- FLOAT -->
+  <button class="float-btn" onclick="openPhone()">Reserve a Table</button>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#menu" onclick="closeMobile()">Menu</a>
+  <a href="#events" onclick="closeMobile()">Events</a>
+  <a href="#reviews" onclick="closeMobile()">Reviews</a>
+  <a href="#location" onclick="closeMobile()">Location</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-main">CHALLENGER</div>
+      <div class="nav-logo-sub">Tap House · Lancaster, CA</div>
+    </div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#events">Events</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#location">Location</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-cta" onclick="openPhone()">Reserve</button>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-img" id="heroBg">
+    <div class="ai-placeholder" style="height:100vh"><div class="ai-spin"></div><div class="ai-label">Generating hero...</div></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content reveal">
+    <div class="hero-badge"><div class="hero-dot"></div>Now Open · Lancaster, CA</div>
+    <h1>Lancaster's<span>Premier Tap House</span></h1>
+    <p class="hero-sub">Craft beer on tap, signature burgers, legendary wings, and a vibe that keeps you coming back. Your new favorite spot on E Ave K.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">View Menu</button>
+      <button class="btn-outline" onclick="openPhone()">Reserve a Table</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">Craft Beers</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4.8★</div><div class="hero-stat-label">Google Rating</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">12+</div><div class="hero-stat-label">Screens</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Family Friendly</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="features-grid">
+    <div class="feat"><div class="feat-img" id="featImg0"><div class="ai-placeholder" style="width:56px;height:56px"></div></div><div class="feat-title">Family Friendly</div><div class="feat-desc">A welcoming space for all ages. Great food, great vibes — just good times for everyone.</div></div>
+    <div class="feat"><div class="feat-img" id="featImg1"><div class="ai-placeholder" style="width:56px;height:56px"></div></div><div class="feat-title">Sports Central</div><div class="feat-desc">Multiple screens, every game. The best seat in Lancaster for game day, every season.</div></div>
+    <div class="feat"><div class="feat-img" id="featImg2"><div class="ai-placeholder" style="width:56px;height:56px"></div></div><div class="feat-title">50+ Craft Taps</div><div class="feat-desc">Local, regional, and national craft beers rotating weekly. Always something new to try.</div></div>
+    <div class="feat"><div class="feat-img" id="featImg3"><div class="ai-placeholder" style="width:56px;height:56px"></div></div><div class="feat-title">Weekly Events</div><div class="feat-desc">Trivia nights, live music, themed evenings, and happy hour specials you'll love.</div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="reveal" style="position:relative">
+      <div class="about-main-img" id="aboutMain"><div class="ai-placeholder" style="height:500px"><div class="ai-spin"></div><div class="ai-label">Generating...</div></div></div>
+
+    </div>
+    <div class="reveal">
+      <div class="section-label">Our Story</div>
+      <div class="section-title">More Than<br>a <span>Bar.</span></div>
+      <div class="divider"></div>
+      <p class="section-desc">Challenger Tap House is Lancaster's go-to destination for craft beer lovers, food enthusiasts, and sports fans alike. We built this place with one mission: give our community somewhere exceptional to gather, eat, drink, and belong.</p>
+      <p class="section-desc" style="margin-top:16px">From our rotating craft tap list to our kitchen's signature smash burgers and fall-off-the-bone wings, every detail has been crafted with care. Our staff treats every guest like a regular from day one.</p>
+      <div class="about-highlights">
+        <div class="about-hi"><div class="about-hi-icon" id="hiImg0"><div class="ai-placeholder" style="height:36px"></div></div><div class="about-hi-text"><strong>Legendary Food</strong><span>Smash burgers & wings</span></div></div>
+        <div class="about-hi"><div class="about-hi-icon" id="hiImg1"><div class="ai-placeholder" style="height:36px"></div></div><div class="about-hi-text"><strong>Friendly Staff</strong><span>Welcoming every guest</span></div></div>
+        <div class="about-hi"><div class="about-hi-icon" id="hiImg2"><div class="ai-placeholder" style="height:36px"></div></div><div class="about-hi-text"><strong>Huge Beer List</strong><span>50+ rotating taps</span></div></div>
+        <div class="about-hi"><div class="about-hi-icon" id="hiImg3"><div class="ai-placeholder" style="height:36px"></div></div><div class="about-hi-text"><strong>Local Favorite</strong><span>Lancaster's #1 tap house</span></div></div>
+      </div>
+      <button class="btn-primary" style="margin-top:36px" onclick="openPhone()">Book a Table</button>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="menu-header reveal">
+    <div class="section-label">What We Serve</div>
+    <div class="section-title">The <span>Menu</span></div>
+    <div class="divider"></div>
+    <p class="section-desc">Crafted from scratch daily. Whether you're here for a cold one or a full spread, we have something for everyone.</p>
+  </div>
+  <div class="menu-tabs reveal">
+    <button class="menu-tab active" data-tab="burgers">Burgers</button>
+    <button class="menu-tab" data-tab="wings">Wings</button>
+    <button class="menu-tab" data-tab="apps">Appetizers</button>
+    <button class="menu-tab" data-tab="salads">Salads</button>
+    <button class="menu-tab" data-tab="beer">Craft Beer</button>
+    <button class="menu-tab" data-tab="cocktails">Cocktails</button>
+  </div>
+  <div id="tab-burgers" class="menu-panel active reveal">
+    <div class="menu-card"><div class="menu-card-img" id="mImg_b0"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div><span class="menu-badge">Best Seller</span></div><div class="menu-body"><div class="menu-cat">Burgers</div><div class="menu-name">The Challenger Smash</div><p class="menu-desc">Double smash patty, American cheese, caramelized onion, pickles, Challenger sauce on a brioche bun.</p><div class="menu-footer"><div class="menu-price">$14</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_b1"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Burgers</div><div class="menu-name">Bacon BBQ Bomber</div><p class="menu-desc">Thick-cut bacon, smoked cheddar, crispy onion strings, house BBQ sauce, jalapeño aioli.</p><div class="menu-footer"><div class="menu-price">$16</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_b2"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Burgers</div><div class="menu-name">Inferno Burger</div><p class="menu-desc">Ghost pepper jack, sriracha slaw, pickled jalapeños, habanero mayo. For the brave only.</p><div class="menu-footer"><div class="menu-price">$15</div><button class="menu-add">Add to Order</button></div></div></div>
+  </div>
+  <div id="tab-wings" class="menu-panel reveal">
+    <div class="menu-card"><div class="menu-card-img" id="mImg_w0"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div><span class="menu-badge">Fan Fave</span></div><div class="menu-body"><div class="menu-cat">Wings</div><div class="menu-name">Classic Buffalo Wings</div><p class="menu-desc">Crispy wings tossed in our house buffalo sauce. Mild, hot, or extra hot. Served with blue cheese.</p><div class="menu-footer"><div class="menu-price">$13</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_w1"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Wings</div><div class="menu-name">Honey Gold Wings</div><p class="menu-desc">Sticky honey-gold glaze with a hint of garlic and cayenne. Perfectly balanced sweet-heat.</p><div class="menu-footer"><div class="menu-price">$14</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_w2" style="height:200px;overflow:hidden"><img src="https://i.ibb.co/fYR8Zxg1/WQVlv-FFYh-SWVBp5-O7l74-FG5y-WZgut-ayjq-YPQ2-WQ7-Rf-Ix7-Pq-ZRGu-Tnjo-VTArh2-MZb9-P2-VQVT-l-Ez-XTWm-Gg-YOy4.jpg" style="width:100%;height:100%;object-fit:cover" alt="Garlic Parmesan Wings"/></div><div class="menu-body"><div class="menu-cat">Wings</div><div class="menu-name">Garlic Parmesan</div><p class="menu-desc">Crispy wings tossed in roasted garlic butter and shaved parmesan. A classic done right.</p><div class="menu-footer"><div class="menu-price">$14</div><button class="menu-add">Add to Order</button></div></div></div>
+  </div>
+  <div id="tab-apps" class="menu-panel reveal">
+    <div class="menu-card"><div class="menu-card-img" id="mImg_a0"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div><span class="menu-badge">Must Try</span></div><div class="menu-body"><div class="menu-cat">Appetizers</div><div class="menu-name">Challenger Tater Tots</div><p class="menu-desc">Loaded crispy tots with cheddar, bacon bits, sour cream, and chives. The best in Lancaster.</p><div class="menu-footer"><div class="menu-price">$10</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_a1"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Appetizers</div><div class="menu-name">Beer Cheese Nachos</div><p class="menu-desc">Loaded nachos with house beer-cheese sauce, pico, jalapeños, guac, and sour cream.</p><div class="menu-footer"><div class="menu-price">$13</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_a2" style="height:200px;overflow:hidden"><img src="https://i.ibb.co/7xz80Nqq/vz-NOIh2y-Jl-pi-NRQR-3-XIb73jlj-LAnaau7-sz-YBQ1j-Lqq4t-Ahxf-J0urh-Vt-TFEDy-TRthh-Wil-GYNh-z3-Lt-L9pp-C.jpg" style="width:100%;height:100%;object-fit:cover" alt="Jalapeño Poppers"/></div><div class="menu-body"><div class="menu-cat">Appetizers</div><div class="menu-name">Jalapeño Poppers</div><p class="menu-desc">Cream cheese stuffed jalapeños wrapped in bacon, fried golden. Served with ranch.</p><div class="menu-footer"><div class="menu-price">$11</div><button class="menu-add">Add to Order</button></div></div></div>
+  </div>
+  <div id="tab-salads" class="menu-panel reveal">
+    <div class="menu-card"><div class="menu-card-img" id="mImg_s0"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Salads</div><div class="menu-name">Southwest Chicken Salad</div><p class="menu-desc">Grilled chicken, black beans, corn, avocado, tortilla strips, cilantro lime dressing.</p><div class="menu-footer"><div class="menu-price">$13</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_s1"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Salads</div><div class="menu-name">Classic Caesar</div><p class="menu-desc">Romaine, house Caesar dressing, shaved parmesan, anchovy, crunchy house croutons.</p><div class="menu-footer"><div class="menu-price">$11</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_s2"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Salads</div><div class="menu-name">Steak & Arugula</div><p class="menu-desc">Sliced sirloin over arugula, shaved parmesan, lemon vinaigrette, candied walnuts.</p><div class="menu-footer"><div class="menu-price">$17</div><button class="menu-add">Add to Order</button></div></div></div>
+  </div>
+  <div id="tab-beer" class="menu-panel reveal">
+    <div class="menu-card"><div class="menu-card-img" id="mImg_beer0"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div><span class="menu-badge">On Tap</span></div><div class="menu-body"><div class="menu-cat">Craft Beer</div><div class="menu-name">Rotating IPA Selection</div><p class="menu-desc">Ask your server about this week's rotating IPA taps from local and West Coast breweries.</p><div class="menu-footer"><div class="menu-price">$7+</div><button class="menu-add">Ask Server</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_beer1"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Craft Beer</div><div class="menu-name">Lager & Pilsner Wall</div><p class="menu-desc">15+ lagers and pilsners on tap. Crisp, refreshing, perfectly poured. Always cold.</p><div class="menu-footer"><div class="menu-price">$6+</div><button class="menu-add">View Taps</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_beer2"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Craft Beer</div><div class="menu-name">Dark & Stout Collection</div><p class="menu-desc">Nitro stouts, porters, and dark ales. Rich, bold, complex. The perfect pour for dark beer lovers.</p><div class="menu-footer"><div class="menu-price">$7+</div><button class="menu-add">View Taps</button></div></div></div>
+  </div>
+  <div id="tab-cocktails" class="menu-panel reveal">
+    <div class="menu-card"><div class="menu-card-img" id="mImg_c0"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div><span class="menu-badge">House Special</span></div><div class="menu-body"><div class="menu-cat">Cocktails</div><div class="menu-name">Challenger Old Fashioned</div><p class="menu-desc">Buffalo Trace bourbon, Demerara syrup, Angostura bitters, orange peel. Perfection in a glass.</p><div class="menu-footer"><div class="menu-price">$13</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_c1"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Cocktails</div><div class="menu-name">Citrus Margarita</div><p class="menu-desc">Patron Silver, fresh lime, orange liqueur, agave nectar, salted rim. Classic and perfect.</p><div class="menu-footer"><div class="menu-price">$12</div><button class="menu-add">Add to Order</button></div></div></div>
+    <div class="menu-card"><div class="menu-card-img" id="mImg_c2"><div class="ai-placeholder" style="height:200px"><div class="ai-spin"></div></div></div><div class="menu-body"><div class="menu-cat">Cocktails</div><div class="menu-name">Tap House Mule</div><p class="menu-desc">Tito's vodka, fresh ginger beer, lime juice, mint sprig. Served in a cold copper mug.</p><div class="menu-footer"><div class="menu-price">$11</div><button class="menu-add">Add to Order</button></div></div></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section reveal">
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-num">50<span class="stat-unit">+</span></div><div class="stat-label">Beers on Tap</div></div>
+    <div class="stat-item"><div class="stat-num">4.8<span class="stat-unit">★</span></div><div class="stat-label">Avg Rating</div></div>
+    <div class="stat-item"><div class="stat-num">12<span class="stat-unit">+</span></div><div class="stat-label">Screens</div></div>
+    <div class="stat-item"><div class="stat-num">100<span class="stat-unit">%</span></div><div class="stat-label">Made Fresh</div></div>
+  </div>
+</div>
+
+
+
+<!-- REVIEWS -->
+<section class="reviews-section" id="reviews">
+  <div class="reviews-header reveal">
+    <div class="section-label">Customer Reviews</div>
+    <div class="section-title">People <span>Love Us</span></div>
+    <div class="divider"></div>
+    <div class="rating-summary"><div class="rating-big">4.8</div><div><div class="rating-stars">★★★★★</div><div style="font-size:13px;color:var(--muted)">Based on 200+ Google Reviews</div></div></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"The wings here are absolutely incredible. Best I've had in the AV. The staff is so welcoming and the vibe is perfect for watching the game."</p><div class="review-author"><div class="review-avatar">JM</div><div><div class="review-name">Jason M.</div><div class="review-meta">2 weeks ago · Google Review</div></div></div></div>
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Tater tots are out of this world — I dream about them. The beer selection is massive and the bartenders actually know their craft. 10/10."</p><div class="review-author"><div class="review-avatar">SL</div><div><div class="review-name">Sarah L.</div><div class="review-meta">1 month ago · Google Review</div></div></div></div>
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Best tap house in Lancaster, no contest. Great atmosphere, family friendly. The Challenger Smash Burger is a masterpiece."</p><div class="review-author"><div class="review-avatar">RK</div><div><div class="review-name">Robert K.</div><div class="review-meta">3 weeks ago · Google Review</div></div></div></div>
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"We came in for trivia night and stayed 3 hours just having fun. The staff makes you feel like family. Already planning our next visit!"</p><div class="review-author"><div class="review-avatar">AM</div><div><div class="review-name">Amanda M.</div><div class="review-meta">5 days ago · Google Review</div></div></div></div>
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Excellent service every single time. The rotating craft beers keep things fresh. If you haven't tried the honey gold wings, you're missing out."</p><div class="review-author"><div class="review-avatar">DT</div><div><div class="review-name">David T.</div><div class="review-meta">2 months ago · Google Review</div></div></div></div>
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Brought the whole family — kids loved it, parents loved it. Clean, spacious, great food. Jalapeño poppers and nachos were a huge hit!"</p><div class="review-author"><div class="review-avatar">LP</div><div><div class="review-name">Lisa P.</div><div class="review-meta">1 week ago · Google Review</div></div></div></div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events-section" id="events">
+  <div class="events-inner">
+    <div class="events-header reveal">
+      <div class="section-label">What's On</div>
+      <div class="section-title">Events &amp; <span>Specials</span></div>
+      <div class="divider"></div>
+      <p class="section-desc">Something happening every night of the week. Grab your crew and come through.</p>
+    </div>
+    <div class="events-grid">
+      <div class="event-card reveal"><div class="event-img" id="evImg0"><div class="ai-placeholder" style="height:160px"><div class="ai-spin"></div></div></div><div class="event-body"><div class="event-day">Every Sunday</div><div class="event-title">Sunday Game Day</div><p class="event-desc">All NFL & NBA games on 12+ screens. Wing specials, beer buckets, loudest crowd in Lancaster.</p><div class="event-time">All Day · Doors 10 AM</div></div></div>
+      <div class="event-card reveal"><div class="event-img" id="evImg1"><div class="ai-placeholder" style="height:160px"><div class="ai-spin"></div></div></div><div class="event-body"><div class="event-day">Every Wednesday</div><div class="event-title">Trivia Night</div><p class="event-desc">Teams of up to 6. Win bar credit and prizes. Sign up at the door — no reservation needed.</p><div class="event-time">7 PM – 9 PM</div></div></div>
+      <div class="event-card reveal"><div class="event-img" id="evImg2"><div class="ai-placeholder" style="height:160px"><div class="ai-spin"></div></div></div><div class="event-body"><div class="event-day">Fri & Sat</div><div class="event-title">Live Music</div><p class="event-desc">Local talent takes the stage every Friday and Saturday. No cover charge. Just great music.</p><div class="event-time">8 PM – 11 PM</div></div></div>
+      <div class="event-card reveal"><div class="event-img" id="evImg3"><div class="ai-placeholder" style="height:160px"><div class="ai-spin"></div></div></div><div class="event-body"><div class="event-day">Mon–Fri</div><div class="event-title">Happy Hour</div><p class="event-desc">$2 off all drafts, $1 off wells, half-price appetizers. Best happy hour in the Antelope Valley.</p><div class="event-time">3 PM – 6 PM</div></div></div>
+      <div class="event-card reveal"><div class="event-img" id="evImg4" style="height:160px;overflow:hidden"><img src="https://i.ibb.co/CpgSLgGM/Rz9rtks-W19c3i-G5j3-m-VYq-VKYp-OTcdy-B6r2-ATFx54ah-ATMr-UO4ovktd-Fnp-XSJ073-K8f-Jkk594-GFSib-T6-Hlcx2rp0.jpg" style="width:100%;height:100%;object-fit:cover" alt="Darts Tournament"/></div><div class="event-body"><div class="event-day">First Saturday</div><div class="event-title">Darts Tournament</div><p class="event-desc">Cash prize pool, trophies, and competitive fun. Sign up solo or in pairs.</p><div class="event-time">6 PM</div></div></div>
+      <div class="event-card reveal"><div class="event-img" id="evImg5"><div class="ai-placeholder" style="height:160px"><div class="ai-spin"></div></div></div><div class="event-body"><div class="event-day">Every Tuesday</div><div class="event-title">Tap Tuesday</div><p class="event-desc">Featured tap of the week at $1 off all night. A new craft every week to discover.</p><div class="event-time">All Day Tuesdays</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location-section" id="location">
+  <div class="location-inner">
+    <div class="reveal">
+      <div class="section-label">Find Us</div>
+      <div class="section-title">Visit <span>Challenger</span></div>
+      <div class="divider"></div>
+      <div class="contact-items">
+        <div class="contact-item"><div><div class="contact-label">Address</div><div class="contact-value">1048 E Ave K, Lancaster, CA 93535</div></div></div>
+        <div class="contact-item"><div><div class="contact-label">Phone</div><a href="tel:6614180056"><div class="contact-value" style="color:var(--amber)">(661) 418-0056</div></a><div class="contact-sub">Tap to call</div></div></div>
+        <div class="contact-item"><div><div class="contact-label">Hours</div><div class="hours-grid"><div class="hour-row"><span>Sunday</span><span>9:30 AM – 1 AM</span></div><div class="hour-row"><span>Mon – Sat</span><span>11 AM – 1 AM</span></div></div></div></div>
+      </div>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=1048+E+Ave+K,+Lancaster,+CA+93535" target="_blank" rel="noopener"><button class="btn-primary">Get Directions</button></a>
+    </div>
+    <div class="map-wrap reveal">
+      <div style="padding:16px 20px;background:var(--dark2);border:1px solid var(--glassborder);border-radius:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <span style="font-size:13px;color:var(--muted)">📍 1048 E Ave K, Lancaster, CA 93535</span>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=1048+E+Ave+K,+Lancaster,+CA+93535" target="_blank" rel="noopener" style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:600">Open in Google Maps →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">CHALLENGER</div>
+      <div class="footer-brand-sub">Tap House · Lancaster, CA</div>
+      <p class="footer-about">Lancaster's premier craft beer and sports bar. Great food, cold beer, and even better company at 1048 E Ave K.</p>
+      <div class="social-row">
+        <a href="#" class="social-btn">f</a>
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">X</a>
+        <a href="#" class="social-btn">★</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigate</h4><div class="footer-links"><a href="#about">About Us</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#events">Events</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></div></div>
+    <div class="footer-col"><h4>Hours</h4>      <div class="footer-hours-list"><p><strong>Sunday</strong><br>9:30 AM – 1 AM</p><p><strong>Mon – Sat</strong><br>11 AM – 1 AM</p></div></div>
+    <div class="footer-col"><h4>Contact</h4><div class="footer-links"><a href="tel:6614180056">(661) 418-0056</a><a>1048 E Ave K</a><a>Lancaster, CA 93535</a></div><a href="tel:6614180056" style="display:inline-block;margin-top:20px"><button class="btn-primary" style="font-size:12px;padding:12px 24px">Call Now</button></a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Challenger Tap House. All rights reserved.</span><span>Privacy Policy · Terms · FAQ</span></div>
+</footer>
+
+<script>
+// ── IMAGES TO GENERATE ──────────────────────────────────────
+const IMAGES = [
+  // Hero
+  {id:'heroBg', prompt:'Dark moody upscale sports bar interior at night, long mahogany bar with golden tap handles glowing amber, multiple TV screens showing sports, warm Edison bulb lighting, cinematic wide shot, premium photography', w:1400,h:900, mode:'bg'},
+  // Features
+  {id:'featImg0', prompt:'Happy smiling family with kids eating at a warm cozy restaurant table, food and drinks visible, soft warm lighting, photorealistic close-up portrait style', w:200,h:200},
+  {id:'featImg1', prompt:'Large flat screen TVs showing live NFL football game in dark sports bar, blue and amber glow from screens, dramatic moody lighting', w:200,h:200},
+  {id:'featImg2', prompt:'Close-up of shiny chrome craft beer tap handles on dark bar counter, amber backlight glow, shallow depth of field, premium bar photography', w:200,h:200},
+  {id:'featImg3', prompt:'Lively group of friends at pub trivia night raising hands and laughing, answer sheets on table, warm amber bar lighting', w:200,h:200},
+  // About
+  {id:'aboutMain', prompt:'Cinematic interior shot of upscale dark wood American sports bar, long polished bar with leather stools, glowing amber beer taps, string lights, warm moody atmosphere, wide angle professional photography', w:800,h:1000},
+  {id:'aboutAccent', prompt:'Close-up of perfectly poured cold craft beer in glass, golden light, dark background, condensation drops', w:300,h:300},
+  // About highlights
+  {id:'hiImg0', prompt:'Juicy gourmet smash burger close-up, dark background, food photography', w:36,h:36},
+  {id:'hiImg1', prompt:'Smiling bartender in apron behind bar, warm light, welcoming', w:36,h:36},
+  {id:'hiImg2', prompt:'Row of craft beer taps close up, golden amber light', w:36,h:36},
+  {id:'hiImg3', prompt:'Busy popular bar at night, happy crowd, warm lights', w:36,h:36},
+  // Menu – Burgers
+  {id:'mImg_b0', prompt:'Professional food photography: gourmet double smash burger with two crispy beef patties, melted American cheese dramatically dripping over edges, caramelized onions, pickles, glossy brioche bun, dark slate background, studio lighting, hero shot', w:400,h:250},
+  {id:'mImg_b1', prompt:'Professional food photography: towering BBQ bacon cheeseburger, three thick-cut strips of crispy bacon, smoked cheddar cheese melting, golden crispy onion strings, glossy brioche bun, rustic dark wood background', w:400,h:250},
+  {id:'mImg_b2', prompt:'Professional food photography: spicy fiery burger with ghost pepper jack cheese, bright red sriracha slaw visible, sliced jalapeños, habanero orange mayo dripping, dramatic dark background with red glow', w:400,h:250},
+  // Menu – Wings
+  {id:'mImg_w0', prompt:'Professional food photography: pile of crispy golden buffalo chicken wings coated in bright orange buffalo sauce, small bowl of blue cheese dip, celery sticks, dark dramatic background, rustic cast iron skillet', w:400,h:250},
+  {id:'mImg_w1', prompt:'Professional food photography: honey gold glazed chicken wings with sticky shiny glaze, sesame seeds, warm golden color, dark moody background, close-up hero shot', w:400,h:250},
+  {id:'mImg_w2', prompt:'Professional food photography: garlic parmesan chicken wings with visible herb flakes, shaved parmesan cheese on top, golden crispy skin, white dipping sauce, dark slate plate', w:400,h:250},
+  // Menu – Apps
+  {id:'mImg_a0', prompt:'Professional food photography: loaded tater tots in skillet, melted cheddar cheese, crispy bacon bits, dollop of sour cream, chopped chives, dark rustic background, top-down angle', w:400,h:250},
+  {id:'mImg_a1', prompt:'Professional food photography: massive plate of loaded nachos with beer cheese sauce, fresh pico de gallo, sliced jalapeños, guacamole, sour cream drizzle, dark dramatic background', w:400,h:250},
+  {id:'mImg_a2', prompt:'Professional food photography: crispy jalapeño poppers wrapped in bacon, golden fried exterior, cream cheese filling visible in one split open, small ranch dipping sauce, dark background', w:400,h:250},
+  // Menu – Salads
+  {id:'mImg_s0', prompt:'Professional food photography: southwest chicken salad with sliced grilled chicken, black beans, corn, diced avocado, tortilla strips, cilantro, colorful vibrant overhead shot, dark background', w:400,h:250},
+  {id:'mImg_s1', prompt:'Professional food photography: classic Caesar salad, crisp romaine leaves, golden croutons, shaved parmesan cheese, creamy dressing drizzle, dark elegant background, close-up', w:400,h:250},
+  {id:'mImg_s2', prompt:'Professional food photography: upscale steak arugula salad, thin sliced medium-rare sirloin fanned out, fresh arugula, shaved parmesan, cherry tomatoes, lemon vinaigrette drizzle, dark fine-dining background', w:400,h:250},
+  // Menu – Beer
+  {id:'mImg_beer0', prompt:'Professional beverage photography: craft IPA beer pint glass, golden amber color, thick frothy white head, condensation drops on glass, dark dramatic bar background, warm spot lighting', w:400,h:250},
+  {id:'mImg_beer1', prompt:'Professional beverage photography: three tall lager pilsner glasses in a row, crystal clear golden beer, frothy heads, bar counter, dramatic dark moody background', w:400,h:250},
+  {id:'mImg_beer2', prompt:'Professional beverage photography: nitro stout beer in glass, dark near-black color, creamy cascading nitrogen head, dramatic contrast, dark background, moody lighting', w:400,h:250},
+  // Menu – Cocktails
+  {id:'mImg_c0', prompt:'Professional cocktail photography: classic old fashioned in heavy crystal rocks glass, deep amber bourbon, large ice cube, orange peel twist, maraschino cherry, dark polished wood bar, moody warm lighting', w:400,h:250},
+  {id:'mImg_c1', prompt:'Professional cocktail photography: fresh margarita in wide glass, lime green color, salted rim, lime wedge garnish, vibrant against dark bar background, studio lighting', w:400,h:250},
+  {id:'mImg_c2', prompt:'Professional cocktail photography: Moscow mule in shining copper mug, ice visible, mint sprig garnish, lime wedge, condensation on copper, dark dramatic bar background', w:400,h:250},
+  // Gallery
+  {id:'gal0', prompt:'Atmospheric dark upscale sports bar interior with glowing tap handles, moody amber lighting, wide shot, cinematic', w:600,h:500},
+  {id:'gal1', prompt:'Close-up perfect craft beer pour with frothy head, golden amber, dark background', w:300,h:250},
+  {id:'gal2', prompt:'Game day crowd cheering at sports bar, multiple screens with football, dark atmosphere', w:300,h:250},
+  {id:'gal3', prompt:'Platter of crispy golden chicken wings with sauces, overhead shot, dark rustic table', w:600,h:250},
+  {id:'gal4', prompt:'Bartender mixing cocktail at dark premium bar, motion blur, cinematic photography', w:300,h:250},
+  {id:'gal5', prompt:'Gourmet smash burgers on dark slate board, food styling, restaurant photography', w:300,h:250},
+  // Events
+  {id:'evImg0', prompt:'Sports bar game day with crowd watching large TV screens, cheering fans, dark atmosphere', w:400,h:200},
+  {id:'evImg1', prompt:'Pub quiz trivia night group of friends at bar table with answer sheets, warm lighting', w:400,h:200},
+  {id:'evImg2', prompt:'Live band performing on small stage in dark bar, moody stage lighting, crowd watching', w:400,h:200},
+  {id:'evImg3', prompt:'Happy hour bar scene with friends clinking beer glasses, warm amber lighting', w:400,h:200},
+  {id:'evImg4', prompt:'Darts tournament at pub, close-up of darts in dartboard, dark bar background', w:400,h:200},
+  {id:'evImg5', prompt:'Craft beer tap being poured, golden stream, dramatic dark bar background', w:400,h:200},
+  // Location icons
+
+];
+
+const galleryData = [
+  {caption:'Bar Interior'},
+  {caption:'Craft Beer'},
+  {caption:'Game Day'},
+  {caption:'Famous Wings'},
+  {caption:'Craft Cocktails'},
+  {caption:'Signature Burgers'},
+];
+
+const galImgs = {};
+
+// All custom photos use direct i.ibb.co links
+const UNSPLASH = {
+  heroBg:'https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=1400&q=80&auto=format&fit=crop',
+  featImg0:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=200&q=80&auto=format&fit=crop',
+  featImg1:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=200&q=80&auto=format&fit=crop',
+  featImg2:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=200&q=80&auto=format&fit=crop',
+  featImg3:'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=200&q=80&auto=format&fit=crop',
+  aboutMain:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop',
+  hiImg0:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&q=80&auto=format&fit=crop',
+  hiImg1:'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=80&q=80&auto=format&fit=crop',
+  hiImg2:'https://images.unsplash.com/photo-1532634922-8fe0b757fb13?w=80&q=80&auto=format&fit=crop',
+  hiImg3:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=80&q=80&auto=format&fit=crop',
+  mImg_b0:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80&auto=format&fit=crop',
+  mImg_b1:'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80&auto=format&fit=crop',
+  mImg_b2:'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400&q=80&auto=format&fit=crop',
+  mImg_w0:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=80&auto=format&fit=crop',
+  mImg_w1:'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400&q=80&auto=format&fit=crop',
+  mImg_w2:'https://i.ibb.co/fYR8Zxg1/WQVlv-FFYh-SWVBp5-O7l74-FG5y-WZgut-ayjq-YPQ2-WQ7-Rf-Ix7-Pq-ZRGu-Tnjo-VTArh2-MZb9-P2-VQVT-l-Ez-XTWm-Gg-YOy4.jpg', // Garlic Parmesan Wings
+  mImg_a2:'https://i.ibb.co/7xz80Nqq/vz-NOIh2y-Jl-pi-NRQR-3-XIb73jlj-LAnaau7-sz-YBQ1j-Lqq4t-Ahxf-J0urh-Vt-TFEDy-TRthh-Wil-GYNh-z3-Lt-L9pp-C.jpg', // Jalapeño Poppers
+  mImg_a0:'https://images.unsplash.com/photo-1705276917446-883ead1c0196?w=400&q=80&auto=format&fit=crop',
+  mImg_a1:'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=400&q=80&auto=format&fit=crop',
+  mImg_a2:'https://i.ibb.co/cKvMsXjj/vz-NOIh2y-Jl-pi-NRQR-3-XIb73jlj-LAnaau7-sz-YBQ1j-Lqq4t-Ahxf-J0urh-Vt-TFEDy-TRthh-Wil-GYNh-z3-Lt-L9pp-C.jpg',
+  mImg_s0:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80&auto=format&fit=crop',
+  mImg_s1:'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400&q=80&auto=format&fit=crop',
+  mImg_s2:'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&q=80&auto=format&fit=crop',
+  mImg_beer0:'https://images.unsplash.com/photo-1532634922-8fe0b757fb13?w=400&q=80&auto=format&fit=crop',
+  mImg_beer1:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80&auto=format&fit=crop',
+  mImg_beer2:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=400&q=80&auto=format&fit=crop',
+  mImg_c0:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&q=80&auto=format&fit=crop',
+  mImg_c1:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80&auto=format&fit=crop',
+  mImg_c2:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80&auto=format&fit=crop',
+  evImg0:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80&auto=format&fit=crop',
+  evImg1:'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=400&q=80&auto=format&fit=crop',
+  evImg2:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80&auto=format&fit=crop',
+  evImg3:'https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=400&q=80&auto=format&fit=crop',
+  evImg4:'https://i.ibb.co/CpgSLgGM/Rz9rtks-W19c3i-G5j3-m-VYq-VKYp-OTcdy-B6r2-ATFx54ah-ATMr-UO4ovktd-Fnp-XSJ073-K8f-Jkk594-GFSib-T6-Hlcx2rp0.jpg', // Darts Tournament
+  evImg5:'https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=400&q=80&auto=format&fit=crop',
+};
+
+function setImg(id, src, mode) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const img = document.createElement('img');
+  img.alt = '';
+  img.className = 'ai-img';
+  if (mode === 'bg') img.style.height = '100vh';
+  img.onerror = () => fallbackImg(id, mode);
+  img.src = src;
+  el.innerHTML = '';
+  el.appendChild(img);
+}
+
+// Fallback: rich CSS gradient backgrounds per category
+function fallbackImg(id, mode) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const gradients = {
+    hero: 'linear-gradient(135deg,#1e0a00 0%,#3d1a00 30%,#1a0e00 60%,#080808 100%)',
+    food: 'linear-gradient(135deg,#2d1500,#4a2000)',
+    beer: 'linear-gradient(135deg,#1a0e00,#3d2600)',
+    bar: 'linear-gradient(135deg,#0d0d0d,#1e1a14)',
+    event: 'linear-gradient(135deg,#1a1000,#2d1e00)',
+    icon: 'linear-gradient(135deg,#D97706,#C9962A)',
+  };
+  const cat = id.includes('hero')||id.includes('gal0')||id.includes('aboutMain') ? 'hero'
+    : id.includes('beer')||id.includes('Beer')||id.includes('cocktail')||id.includes('Img_c') ? 'beer'
+    : id.includes('mImg')||id.includes('about')||id.includes('menu') ? 'food'
+    : id.includes('ev')||id.includes('event') ? 'event'
+    : id.includes('loc')||id.includes('feat')||id.includes('hi') ? 'icon' : 'bar';
+  const h = mode==='bg'?'100vh': el.style.height||el.offsetHeight+'px'||'200px';
+  el.innerHTML = `<div style="width:100%;height:${h};background:${gradients[cat]};display:flex;align-items:center;justify-content:center"><span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2)">Challenger</span></div>`;
+}
+
+function loadAllImages() {
+  // Load all images from UNSPLASH map
+  Object.entries(UNSPLASH).forEach(([id, src]) => {
+    setImg(id, src);
+  });
+}
+
+// LIGHTBOX
+function openLight(idx) {
+  const id = 'gal'+idx;
+  const wrap = document.getElementById('lbImgWrap');
+  const src = galImgs[id];
+  if (src) wrap.innerHTML = `<img src="${src}" alt="" style="max-width:80vw;max-height:80vh;display:block;border-radius:4px"/>`;
+  else {
+    const el = document.getElementById(id);
+    const inner = el ? el.querySelector('img') : null;
+    wrap.innerHTML = inner ? `<img src="${inner.src}" alt="" style="max-width:80vw;max-height:80vh;display:block;border-radius:4px"/>` : `<div style="width:400px;height:300px;background:var(--dark3);border-radius:4px"></div>`;
+  }
+  document.getElementById('lbCaption').textContent = galleryData[idx]?.caption||'';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox()});
+
+// NAV
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60),{passive:true});
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click',()=>document.getElementById('mobileMenu').classList.remove('open'));
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open')}
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// MENU TABS
+document.querySelectorAll('.menu-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.menu-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ADD TO ORDER
+document.querySelectorAll('.menu-add').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const o=this.textContent;
+    this.textContent='Added!';this.style.background='var(--amber)';this.style.color='#000';this.style.borderColor='var(--amber)';
+    setTimeout(()=>{this.textContent=o;this.style.background='';this.style.color='';this.style.borderColor='';},1800);
+  });
+});
+
+
+
+// FAQ
+function toggleFaq(btn){
+  const a=btn.nextElementSibling;
+  const open=btn.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(q=>{q.classList.remove('open');q.nextElementSibling.classList.remove('open')});
+  if(!open){btn.classList.add('open');a.classList.add('open');}
+}
+
+// NEWSLETTER
+function subscribeNewsletter(){
+  const el=document.getElementById('nlEmail');
+  if(!el.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){el.style.borderColor='#EF4444';return}
+  el.style.borderColor='';
+  const s=document.getElementById('nlSuccess');
+  s.style.display='block';el.value='';
+  setTimeout(()=>s.style.display='none',5000);
+}
+
+// PHONE POPUP
+function openPhone(){document.getElementById('phonePopup').classList.add('open');document.body.style.overflow='hidden'}
+function closePhone(){document.getElementById('phonePopup').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePhone()});
+
+// BOOT
+loadAllImages();
+
+
+</script>
+</body>
+</html>
